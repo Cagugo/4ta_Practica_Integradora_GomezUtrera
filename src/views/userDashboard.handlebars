@@ -1,0 +1,172 @@
+<html>
+  <head>
+    <title>{{title}}</title>
+  </head>
+  <body>
+    <header class='products_header p-2'>
+      <div class='container'>
+        <div class='d-flex align-items-center justify-content-between p-2'>
+          <div class='d-none d-md-block'>
+            <h4 class='m-0'>Villa Frida (Mexican Fusion Food Tacos & Tostadas)</h4>
+            <p class='form_p d-none d-md-block text-center m-0'>Shop <span class='fw-bold'>Villa Frida</span></p>
+          </div>
+          <div class='d-flex justify-content-center align-items-center ms-md-4'>
+            <h2 class='fw-bold text-center d-none d-md-block'><span class='text-uppercase'>{{user.role}}</span> | Dashboard</h2>
+            <h2 class='fw-bold text-center d-md-none'><span class='text-uppercase'>{{user.role}}</span></h2>
+          </div>
+          <div class='d-flex justify-content-center align-items-center'>
+            <div class='d-flex align-items-center mb-2 me-3'>
+              <div>
+                <a class='btn btn-warning' href='/user' role='button'>Profile</a>
+              </div>
+              <div class='ps-2'>
+                <a class='btn btn-outline-danger' href='/api/session/auth/logout'>Log out</a>
+              </div>
+            </div>
+            <div class='text-secondary d-none d-md-block'>
+              <div class='text-secondary d-none d-md-block'>
+                <p class='font_id mb-0'><span class='fw-bold'>Role: </span> <span class='fw-bold text-danger text-uppercase'>{{user.role}} </span> </p>
+                <p class='font_id mb-0'><span class='fw-bold'>Email: </span> <span id='userEmail'>{{user.email}}</span></p>
+                <p class='font_id mb-2'><span class='fw-bold'>User ID: </span> <span id='userId' data-user-id='{{user._id}}'>{{user._id}}</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class='container pt-4 mb-5'>
+      <div class='user_dashboard'>
+        <div class='d-flex justify-content-center align-items-center flex-column flex-md-row'>
+          <div class='d-flex flex-column justify-content-center align-items-center col-12 col-md-6 p-4'>
+            <div class='p-3 border border-light rounded-2 m-2 col-12'>
+              <form id='roleSelect'>
+                <h4 for='roleSelect' class='mb-3 text-center'>Role</h4>
+                <select class='form-select' id='roleSelect'>
+                  <option disabled selected>Role</option>
+                  {{#if (eq user.role 'user')}}
+                    <option value='premium'>Premium</option>
+                  {{else}}
+                    <option value='user'>User</option>
+                  {{/if}}
+                </select>
+                <div class='text-center mt-4 d-grid gap-2'>
+                  <button type='submit' class='btn btn-dark mb-2' id='submitButton' disabled>Change role</button>
+                </div>
+                <div>
+                  <small class='form-text text-muted'>* Upload the documents required to change from User to Premium : <br />- identification<br />- proof of address <br />- Proof of account status</small>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class='d-flex flex-column justify-content-center align-items-center col-12 col-md-6 p-4'>
+            <div class='table-responsive border border-light rounded rounded-2 p-4 col-12 m-4'>
+              <h4 class='text-center pb-2'>Document Status</h4>
+              <table id='status-table' class='table table-bordered table-striped'>
+                <thead>
+                  <tr>
+                    <th>Documents</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Any document</td>
+                    <td>{{documents_status}}</td>
+                  </tr>
+                  <tr>
+                    <td>Premium documents</td>
+                    <td>{{premium_documents_status}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <small class='text-muted'>* The Status of Premium documents must be "upload" to change the Role from User to Premium </small>
+            </div>
+          </div>
+        </div>
+        <div class='d-flex flex-column justify-content-center ms-3 me-3 border border-light rounded rounded-2 p-4'>
+          <h4 class='text-center pb-2'>Upload Documents</h4>
+          <div class='d-flex flex-column flex-xl-row'>
+            <form id='documentFormIdentification' class='bg-light p-4 rounded ms-2 me-3 rounded rounded-2 d-flex justify-content-center align-items-center'>
+              <div class='d-flex flex-column align-items-between justify-content-between'>
+                <div class='form-group'>
+                  <label class='fw-bold' for='file'>Identification</label>
+                  <input type='file' class='form-control' id='fileIdentification' name='identificacion' multiple />
+                  <small class='form-text text-muted'>*.jpg .png .pdf .webp .svg</small>
+                </div>
+                <div class='text-center mt-4 d-grid gap-2'>
+                  <button type='submit' class='btn btn-primary mb-2'>Upload identification</button>
+                </div>
+              </div>
+            </form>
+            <form id='documentFormProofOfAddress' class='bg-light p-4 rounded ms-2 me-3 rounded rounded-2 d-flex justify-content-center align-items-center'>
+              <div class='d-flex flex-column align-items-between justify-content-between'>
+                <div class='form-group'>
+                  <label class='fw-bold' for='file'>Proof of address</label>
+                  <input type='file' class='form-control' id='fileProofOfAddress' name='comprobanteDeDomicilio' multiple />
+                  <small class='form-text text-muted'>*.jpg .png .pdf .webp .svg</small>
+                </div>
+                <div class='text-center mt-4 d-grid gap-2'>
+                  <button type='submit' class='btn btn-primary mb-2'>Upload receipt</button>
+                </div>
+              </div>
+            </form>
+            <form id='documentFormBankStatement' class='bg-light p-4 rounded ms-2 me-3 rounded rounded-2 d-flex justify-content-center align-items-center'>
+              <div class='d-flex flex-column align-items-between justify-content-between'>
+                <div class='form-group'>
+                  <label class='fw-bold' for='file'>Proof of account status</label>
+                  <input type='file' class='form-control' id='fileBankStatement' name='comprobanteDeEstadoDeCuenta' multiple />
+                  <small class='form-text text-muted'>*.jpg .png .pdf .webp .svg</small>
+                </div>
+                <div class='text-center mt-4 d-grid gap-2'>
+                  <button type='submit' class='btn btn-primary mb-2'>Upload receipt</button>
+                </div>
+              </div>
+            </form>
+            <form id='document' class='bg-light p-4 rounded ms-2 me-3 rounded rounded-2 d-flex justify-content-center align-items-center'>
+              <div class='d-flex flex-column align-items-between justify-content-between'>
+                <div class='form-group'>
+                  <label class='fw-bold' for='file'>Other Documents</label>
+                  <input type='file' class='form-control' id='fileDocument' name='document' multiple />
+                  <small class='form-text text-muted'>*.jpg .png .pdf .webp .svg</small>
+                </div>
+                <div class='text-center mt-4 d-grid gap-2'>
+                  <button type='submit' class='btn btn-primary mb-2'>Upload document</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class='d-flex justify-content-center m-3 mt-5'>
+          <div class='table-responsive border border-light rounded rounded-2 p-4 col-12'>
+            <h4 class='text-center pb-2'>List of Uploaded Documents</h4>
+            <table id='product-table' class='table table-bordered table-striped'>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Reference</th>
+                  <th>FieldName</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each documents}}
+                  <tr id='{{get this "_id"}}'>
+                    <td>{{get this '_id'}}</td>
+                    <td>{{get this 'name'}}</td>
+                    <td>{{get this 'reference'}}</td>
+                    <td>{{get this 'fieldname'}}</td>
+                    <td><button class='btn btn-danger btn-sm' onclick='deleteDocument("{{get this "_id"}}")'>Remove</button></td>
+                  </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src='/socket.io/socket.io.js'></script>
+    <script src='/js/userDashboard/index.js'></script>
+  </body>
+</html>
